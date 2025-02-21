@@ -10,7 +10,7 @@ class Family_Member:
         self.title = title
         self.save()
 
-
+    # set attributes as properties
     @property
     def name(self):
         return self._name
@@ -44,6 +44,7 @@ class Family_Member:
         else:
             raise ValueError("Title must be a string.")
         
+    #table methods        
     @classmethod
     def create_table(cls):
         CURSOR.execute('''CREATE TABLE IF NOT EXISTS family_members (
@@ -60,6 +61,7 @@ class Family_Member:
         CONN.commit()
 
     def save(self):
+        #check if member exists before saving to avoid duplicates
         if any(member.name == self.name for member in Family_Member.all.values()):
             return None
         
@@ -71,13 +73,14 @@ class Family_Member:
 
     @classmethod
     def instance_from_db(cls, row):
+        # check dict for member
         for member in cls.all.values():
             if member.id == row[0]:
                 member.name = row[1]
                 member.age = row[2]
                 member.title = row[3]
                 return member
-            
+            #create a new member if necessary
             member = cls(row[1], row[2], row[3])
             member.id = row[0]
             cls.all[member.id]=member
@@ -88,6 +91,7 @@ class Family_Member:
 
         rows = CURSOR.execute("SELECT * FROM family_members").fetchall()
         members = []
+        # avoid Nones
         for row in rows:
             member = cls.instance_from_db(row)
             if member:
@@ -96,10 +100,11 @@ class Family_Member:
         return members
                 
     def delete(self):
+        # import in method to avoid circular import
         from models.tasks import Task
         CURSOR.execute("DELETE FROM family_members WHERE id=?", (self.id,))
         CONN.commit()
-        
+        # iterate through tasks and delete tasks for deleted fam member
         for task in Task.all_tasks_for_id(self.id):
             task.delete()
 
@@ -113,11 +118,12 @@ class Family_Member:
             
     @classmethod
     def update(cls, id, name, age, title):
+        # update dict entry
         if cls.all[id]:
             cls.all[id].name = name
             cls.all[id].age = age
             cls.all[id].title = title
-            
+            # update db
             CURSOR.execute("UPDATE family_members SET name=?, age=?, title=? WHERE id=?", (name, age, title, id))
             CONN.commit()
         else:
