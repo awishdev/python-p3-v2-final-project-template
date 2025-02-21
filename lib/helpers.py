@@ -39,8 +39,11 @@ def exit_program():
 def seed():
     # set up database
     # wipe and set up tables
-    Family_Member.drop_table()
-    Task.drop_table()
+    ####################
+    # uncomment drops for testing
+    ####################
+    #Family_Member.drop_table()
+    #Task.drop_table()
     Family_Member.create_table()
     Task.create_table()
     # add family
