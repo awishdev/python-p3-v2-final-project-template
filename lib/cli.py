@@ -123,7 +123,7 @@ def del_task_menu():
         main_menu()
     else:
         del_task(choice)
-        del_task_menu()
+        task_menu()
     
 
 if __name__ == "__main__":
