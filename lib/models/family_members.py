@@ -64,6 +64,16 @@ class Family_Member:
         #check if member exists before saving to avoid duplicates
         if any(member.name == self.name for member in Family_Member.all.values()):
             return None
+        # check if member exists in db before saving to avoid duplicates
+        dupe = CURSOR.execute('''SELECT * FROM family_members WHERE name =?''', (self.name,)).fetchone()
+
+        if dupe:
+            
+            self.id = dupe[0]
+            Family_Member.all[self.id]=self
+            
+            
+        
         
         CURSOR.execute('''INSERT INTO family_members (name, age, title) VALUES (?,?,?)''', (self.name, self.age, self.title))
         CONN.commit()
@@ -72,7 +82,7 @@ class Family_Member:
         
 
     @classmethod
-    def instance_from_db(cls, row):
+    def build_member(cls, row):
         # check dict for member
         for member in cls.all.values():
             if member.id == row[0]:
@@ -93,7 +103,7 @@ class Family_Member:
         members = []
         # avoid Nones
         for row in rows:
-            member = cls.instance_from_db(row)
+            member = cls.build_member(row)
             if member:
                 members.append(member)
         
@@ -114,7 +124,7 @@ class Family_Member:
     def find_by_id(cls, id):
         member = CURSOR.execute("SELECT * FROM family_members WHERE id = ?", [id]).fetchone()
         if member:
-            return cls.instance_from_db(member)
+            return cls.build_member(member)
             
     @classmethod
     def update(cls, id, name, age, title):

@@ -13,7 +13,8 @@ from helpers import (
     delete_member,
     search_by_family_member,
     search_by_description,
-    del_task
+    del_task,
+    new_family_member
 
 )
 
@@ -31,17 +32,21 @@ def main_menu():
     print("Please select an option:")
     print("0. Exit the program")
     print("1. View family members")
-    print("2. View tasks")
-    print("3. Search tasks")
+    print("2. New family member")
+    print("3. View tasks")
+    print("4. Search tasks")
     choice = input(">")
     if choice == "0":
         exit_program()
     elif choice == "1":
         family_menu()
     elif choice == "2":
+        new_family_member()
+        main_menu()
+    elif choice == "3":
         view_tasks()
         task_menu()
-    elif choice == "3":
+    elif choice == "4":
         search_menu()        
     else:
         print("Invalid choice")

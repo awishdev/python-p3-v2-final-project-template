@@ -53,14 +53,19 @@ class Task:
         # check if task exists before saving to avoid duplicates
         if any(task.description == self.description for task in Task.all.values()):
             return None
-        
+        # check if task exists in db before saving to avoid duplicates
+        dupe = CURSOR.execute('''SELECT * FROM tasks WHERE description =?''', (self.description,)).fetchone()
+
+        if dupe:
+            return None
+
         CURSOR.execute('''INSERT INTO tasks (description, family_member_id) VALUES (?,?)''', (self.description, self.family_member_id))
         CONN.commit()
         self.id = CURSOR.lastrowid
         Task.all[self.id] = self
 
     @classmethod
-    def instance_from_db(cls, row):
+    def build_task(cls, row):
 
         for task in cls.all.values():
             #check dict for task
@@ -79,7 +84,7 @@ class Task:
     def get_all(cls):
         # fetch all rows from the tasks table and create list of instances
         rows = CURSOR.execute("SELECT * FROM tasks").fetchall()
-        return [cls.instance_from_db(row) for row in rows]
+        return [cls.build_task(row) for row in rows]
     
     def delete(self):
         # self destruct
@@ -91,21 +96,16 @@ class Task:
     @classmethod
     def find_by_id(cls, id):
         task = CURSOR.execute("SELECT * FROM tasks WHERE id =?", [id]).fetchone()
-        return cls.instance_from_db(task) if task else None
+        return cls.build_task(task) if task else None
     
     @classmethod
     def all_tasks_for_id(cls, id):
         tasks = CURSOR.execute("SELECT * FROM tasks WHERE family_member_id =?", [id]).fetchall()
-        return [cls.instance_from_db(task) for task in tasks]
+        return [cls.build_task(task) for task in tasks]
     
     @classmethod
     def find_by_description(cls, description):
         tasks = CURSOR.execute("SELECT * FROM tasks WHERE description =?", [description]).fetchall()
-        return [cls.instance_from_db(task) for task in tasks]
-    
-    def delete(self):
-        CURSOR.execute("DELETE FROM tasks WHERE id=?", (self.id,))
-        CONN.commit()
-        del Task.all[self.id]
+        return [cls.build_task(task) for task in tasks]
     
     

@@ -5,7 +5,8 @@ from models.tasks import Task
 def view_members():
     # display family members in numbered list
     print("***Family Members***")
-    for member in Family_Member.get_all():
+    members = Family_Member.get_all()
+    for i, member in enumerate(members, start=1):
         print(f"{member.id}.{member.name}")
 
 def get_member(id):
@@ -20,15 +21,17 @@ def get_member(id):
 def tasks_by_id(id):
     # display tasks for a specific family member by id
     print(f"***Tasks for {Family_Member.find_by_id(id).name}***")
-    for task in Task.all_tasks_for_id(id):
-        print(f"{task.description}")
+    tasks = Task.all_tasks_for_id(id)
+    for i, task in enumerate(tasks, start=1):
+        print(f"{i}.{task.description}")
 
 def view_tasks():
     # display all tasks in numbered list
     print("***Tasks***")
-    for task in Task.get_all():
+    tasks = Task.get_all()
+    for i, task in enumerate(tasks, start=1):
         member = Family_Member.find_by_id(task.family_member_id)
-        print(f"{task.id}.{task.description} to be done by {member.name}")
+        print(f"{i}.{task.description} to be done by {member.name}")
     print("***********")
 
 def exit_program():
@@ -39,25 +42,29 @@ def exit_program():
 def seed():
     # set up database
     # wipe and set up tables
+    if not len(Family_Member.get_all()) > 0:
     ####################
     # uncomment drops for testing
     ####################
-    #Family_Member.drop_table()
-    #Task.drop_table()
-    Family_Member.create_table()
-    Task.create_table()
-    # add family
-    Aj = Family_Member("AJ", 5, "Son")
-    Lauren = Family_Member("Lauren", 7, "Daughter")
-    Violet = Family_Member("Violet", 2, "Daughter")
-    Katie = Family_Member("Katie", 35, "Wife")
-    Arthur = Family_Member("Arthur", 29, "Me")
-    # add tasks
-    Dishes = Task("Wash Dishes", 4)
-    Cooking = Task("Cook Dinner", 5)
-    Laundry = Task("Laundry", 4)
-    Pickup = Task("Pickup toys", 2)
-    Washcar = Task("Wash Car", 5)
+        Family_Member.drop_table()
+        Task.drop_table()
+        Family_Member.create_table()
+        Task.create_table()
+    # build local dicts from db
+    
+        #Task.get_all()
+        # add family
+        Aj = Family_Member("AJ", 5, "Son")
+        Lauren = Family_Member("Lauren", 7, "Daughter")
+        Violet = Family_Member("Violet", 2, "Daughter")
+        Katie = Family_Member("Katie", 35, "Wife")
+        Arthur = Family_Member("Arthur", 29, "Me")
+        # add tasks
+        Dishes = Task("Wash Dishes", 4)
+        Cooking = Task("Cook Dinner", 5)
+        Laundry = Task("Laundry", 4)
+        Pickup = Task("Pickup toys", 2)
+        Washcar = Task("Wash Car", 5)
 
 def add_task(id):
     # add a new task for a specific family member by id
@@ -101,7 +108,8 @@ def search_by_family_member(id):
     family_member = Family_Member.find_by_id(id)
     if family_member:
         print(f"Tasks for {family_member.name}:")
-        for task in Task.all_tasks_for_id(id):
+        tasks = Task.all_tasks_for_id(id)
+        for i, task in enumerate(tasks, start=1):
             print(f"{task.description}")
     else:
         print("Family member not found.")
@@ -127,3 +135,11 @@ def del_task(choice):
             print("Task not found.")
     except ValueError:
         print("Invalid task number.")
+
+def new_family_member():
+    # add a new family member
+    name = input("Enter the name of the new family member: ")
+    age = input("Enter the age of the new family member: ")
+    title = input("Enter the title of the new family member: ")
+    Family_Member(name, int(age), title)
+    print("Family member added!")
