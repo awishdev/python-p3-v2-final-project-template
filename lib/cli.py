@@ -6,7 +6,8 @@ from helpers import (
     get_member,
     view_tasks,
     tasks_by_id,
-    seed
+    seed,
+    add_task
 
 )
 
@@ -26,7 +27,6 @@ def main_menu():
     if choice == "0":
         exit_program()
     elif choice == "1":
-        view_members()
         family_menu()
     elif choice == "2":
         view_tasks()
@@ -49,8 +49,9 @@ def family_member_menu(id):
     get_member(id)
     print("0. Return to main menu")
     print("1. View tasks")
-    print("2. Update information")
-    print("3. Delete member D:!!!")
+    print("2. Add task")
+    print("3. Update information")
+    print("4. Delete member D:!!!")
     choice = input(">")
     if choice == "0":
         main_menu()
@@ -58,9 +59,12 @@ def family_member_menu(id):
         tasks_by_id(id)
         family_member_menu(id)
     elif choice == "2":
-        ##update_member_info(id)
+        add_task(id)
         family_member_menu(id)
     elif choice == "3":
+        ##update_member_info(id)
+        family_member_menu(id)
+    elif choice == "4":
         ##delete_member(id)
         main_menu()
     else:

@@ -18,13 +18,14 @@ def get_member(id):
 def tasks_by_id(id):
     print(f"***Tasks for {Family_Member.find_by_id(id).name}***")
     for task in Task.all_tasks_for_id(id):
-        print(f"{task.id}.{task.description}")
+        print(f"{task.description}")
 
 def view_tasks():
     print("***Tasks***")
     for task in Task.get_all():
         member = Family_Member.find_by_id(task.family_member_id)
-        print(f"{task.id}.{task.description} to be done by {member.name}")
+        print(f"{task.description} to be done by {member.name}")
+    print("***********")
 
 def exit_program():
     print("Goodbye!")
@@ -47,3 +48,8 @@ def seed():
     Laundry = Task("Laundry", 4)
     Pickup = Task("Pickup toys", 2)
     Washcar = Task("Wash Car", 5)
+
+def add_task(id):
+    description = input("Enter the description of the task: ")
+    Task(description, int(id))
+    print("Task added!")
