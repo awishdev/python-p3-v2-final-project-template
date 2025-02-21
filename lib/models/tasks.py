@@ -77,10 +77,12 @@ class Task:
         
     @classmethod
     def get_all(cls):
+        # fetch all rows from the tasks table and create list of instances
         rows = CURSOR.execute("SELECT * FROM tasks").fetchall()
         return [cls.instance_from_db(row) for row in rows]
     
     def delete(self):
+        # self destruct
         CURSOR.execute("DELETE FROM tasks WHERE id=?", (self.id,))
         CONN.commit()
 
