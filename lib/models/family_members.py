@@ -1,5 +1,6 @@
 from models.__init__ import CURSOR, CONN
 
+
 class Family_Member:
     all = {}
     def __init__(self, name, age, title):
@@ -95,8 +96,12 @@ class Family_Member:
         return members
                 
     def delete(self):
+        from models.tasks import Task
         CURSOR.execute("DELETE FROM family_members WHERE id=?", (self.id,))
         CONN.commit()
+        
+        for task in Task.all_tasks_for_id(self.id):
+            task.delete()
 
         del Family_Member.all[self.id]
 
@@ -108,12 +113,11 @@ class Family_Member:
             
     @classmethod
     def update(cls, id, name, age, title):
-        # find family member by id and update instance attributes accordingly then update database
         if cls.all[id]:
             cls.all[id].name = name
             cls.all[id].age = age
             cls.all[id].title = title
-            #update row in database with new info
+            
             CURSOR.execute("UPDATE family_members SET name=?, age=?, title=? WHERE id=?", (name, age, title, id))
             CONN.commit()
         else:

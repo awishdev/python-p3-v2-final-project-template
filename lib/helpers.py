@@ -23,7 +23,7 @@ def view_tasks():
     print("***Tasks***")
     for task in Task.get_all():
         member = Family_Member.find_by_id(task.family_member_id)
-        print(f"{task.description} to be done by {member.name}")
+        print(f"{task.id}.{task.description} to be done by {member.name}")
     print("***********")
 
 def exit_program():
@@ -71,7 +71,7 @@ def delete_member(id):
         print(f"Are you sure you want to delete {member.name} (y/n)?")
         choice = input(">")
         if choice.lower() == "y":
-            Family_Member.delete(id)
+            member.delete()
             print(f"{member.name} has been deleted!")
         elif choice.lower() == "n":
             print("Member deletion cancelled.")
@@ -97,3 +97,15 @@ def search_by_description(description):
             print(f"{task.description} to be done by {Family_Member.find_by_id(task.family_member_id).name}")
     else:
         print("No tasks found matching the description.")
+
+def del_task(choice):
+    try:
+        task_id = int(choice)
+        task = Task.find_by_id(task_id)
+        if task:
+            task.delete()
+            print("Task deleted!")
+        else:
+            print("Task not found.")
+    except ValueError:
+        print("Invalid task number.")

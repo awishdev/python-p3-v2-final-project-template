@@ -64,6 +64,7 @@ class Task:
                 task.family_member_id = row[2]
             else:
                 task = cls(row[1], row[2])
+                task.id = row[0]
                 cls.all[task.id]=task
 
             return task
@@ -88,5 +89,15 @@ class Task:
     def all_tasks_for_id(cls, id):
         tasks = CURSOR.execute("SELECT * FROM tasks WHERE family_member_id =?", [id]).fetchall()
         return [cls.instance_from_db(task) for task in tasks]
+    
+    @classmethod
+    def find_by_description(cls, description):
+        tasks = CURSOR.execute("SELECT * FROM tasks WHERE description =?", [description]).fetchall()
+        return [cls.instance_from_db(task) for task in tasks]
+    
+    def delete(self):
+        CURSOR.execute("DELETE FROM tasks WHERE id=?", (self.id,))
+        CONN.commit()
+        del Task.all[self.id]
     
     

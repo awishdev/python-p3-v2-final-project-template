@@ -10,7 +10,10 @@ from helpers import (
     add_task,
     pick_member,
     update_member_info,
-    delete_member
+    delete_member,
+    search_by_family_member,
+    search_by_description,
+    del_task
 
 )
 
@@ -26,6 +29,7 @@ def main_menu():
     print("0. Exit the program")
     print("1. View family members")
     print("2. View tasks")
+    print("3. Search tasks")
     choice = input(">")
     if choice == "0":
         exit_program()
@@ -34,6 +38,8 @@ def main_menu():
     elif choice == "2":
         view_tasks()
         task_menu()
+    elif choice == "3":
+        search_menu()        
     else:
         print("Invalid choice")
         main_menu()
@@ -77,6 +83,7 @@ def family_member_menu(id):
 def task_menu():
     print("0. Back to main menu")
     print("1. Add task")
+    print("2. Delete task")
     choice = input(">")
     if choice == "0":
         main_menu()
@@ -84,9 +91,41 @@ def task_menu():
         id = pick_member()
         add_task(id)
         task_menu()
+    elif choice == "2":
+        del_task_menu()
     else:
         print("Invalid choice")
         task_menu()
 
+def search_menu():
+    print("Search tasks by:")
+    print("1. Description")
+    print("2. Family Member")
+    choice = input(">")
+    if choice == "1":
+        description = input("Enter the description to search: ")
+        search_by_description(description)
+        main_menu()
+    elif choice == "2":
+        view_members()
+        id = input("Enter the family member ID to search: ")
+        search_by_family_member(id)
+        main_menu()
+    else:
+        print("Invalid choice")
+        search_menu()
+
+def del_task_menu():
+    print("0. Back to main menu")
+    view_tasks()
+    choice = input("Enter the number of the task to delete (or 0 to cancel): ")
+    if choice == "0":
+        main_menu()
+    else:
+        del_task(choice)
+        del_task_menu()
+    
+
 if __name__ == "__main__":
     main()
+
