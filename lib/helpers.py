@@ -3,23 +3,28 @@ from models.family_members import Family_Member
 from models.tasks import Task
 
 def view_members():
+    # display family members in numbered list
     print("***Family Members***")
     for member in Family_Member.get_all():
         print(f"{member.id}.{member.name}")
 
 def get_member(id):
+    # search for a specific family member by id
     member = Family_Member.find_by_id(id)
+    # check if its me!
     if member.name == "Arthur":
         print("It's you!")
     else:
         print(f"{member.name} is {member.age} years old and is your {member.title}")
 
 def tasks_by_id(id):
+    # display tasks for a specific family member by id
     print(f"***Tasks for {Family_Member.find_by_id(id).name}***")
     for task in Task.all_tasks_for_id(id):
         print(f"{task.description}")
 
 def view_tasks():
+    # display all tasks in numbered list
     print("***Tasks***")
     for task in Task.get_all():
         member = Family_Member.find_by_id(task.family_member_id)
@@ -27,6 +32,7 @@ def view_tasks():
     print("***********")
 
 def exit_program():
+    #toodles
     print("Goodbye!")
     exit()
 
