@@ -1,5 +1,5 @@
 # lib/cli.py
-
+#helpers
 from helpers import (
     exit_program,
     view_members,
@@ -19,12 +19,15 @@ from helpers import (
 
 
 def main():
+    print("Welcome to the Family Task Manager!")
+    # seed database
     seed()
     main_menu()
 
 
 
 def main_menu():
+    #choose between task and family menus
     print("Please select an option:")
     print("0. Exit the program")
     print("1. View family members")
@@ -45,6 +48,7 @@ def main_menu():
         main_menu()
 
 def family_menu():
+    
     print("please enter the number for the family member you want to select")
     print("0. Back to main menu")
     view_members()
