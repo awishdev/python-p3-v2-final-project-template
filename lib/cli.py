@@ -9,7 +9,8 @@ from helpers import (
     seed,
     add_task,
     pick_member,
-    update_member_info
+    update_member_info,
+    delete_member
 
 )
 

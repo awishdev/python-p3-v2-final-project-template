@@ -79,3 +79,21 @@ def delete_member(id):
             print("Invalid choice. Member deletion cancelled.")
     else:
         print("Member not found.")
+
+def search_by_family_member(id):
+    family_member = Family_Member.find_by_id(id)
+    if family_member:
+        print(f"Tasks for {family_member.name}:")
+        for task in Task.all_tasks_for_id(id):
+            print(f"{task.description}")
+    else:
+        print("Family member not found.")
+
+def search_by_description(description):
+    tasks = Task.find_by_description(description)
+    if tasks:
+        print(f"Tasks containing '{description}':")
+        for task in tasks:
+            print(f"{task.description} to be done by {Family_Member.find_by_id(task.family_member_id).name}")
+    else:
+        print("No tasks found matching the description.")
