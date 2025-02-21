@@ -9,7 +9,7 @@ class Task:
         self.description = description
         self.family_member_id = family_member_id
         self.save()
-
+    #attribute properties
     @property
     def description(self):
         return self._description
@@ -31,6 +31,8 @@ class Task:
             self._family_member_id = value
         else:
             raise ValueError("Family member ID must be an integer.")
+        
+    #table methods
 
     @classmethod
     def create_table(cls):
@@ -48,6 +50,7 @@ class Task:
         CONN.commit()
 
     def save(self):
+        # check if task exists before saving to avoid duplicates
         if any(task.description == self.description for task in Task.all.values()):
             return None
         
@@ -58,14 +61,17 @@ class Task:
 
     @classmethod
     def instance_from_db(cls, row):
+
         for task in cls.all.values():
+            #check dict for task
             if task.id == row[0]:
                 task.description = row[1]
                 task.family_member_id = row[2]
-            else:
-                task = cls(row[1], row[2])
-                task.id = row[0]
-                cls.all[task.id]=task
+                return task
+                #create a new task if necessary
+            task = cls(row[1], row[2])
+            task.id = row[0]
+            cls.all[task.id]=task
 
             return task
         
