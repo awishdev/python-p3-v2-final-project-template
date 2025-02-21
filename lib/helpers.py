@@ -1,9 +1,30 @@
 # lib/helpers.py
+from models.family_members import Family_Member
+from models.tasks import Task
 
-def helper_1():
-    print("Performing useful function#1.")
+def view_members():
+    print("***Family Members***")
+    for member in Family_Member.get_all():
+        print(f"{member.id}.{member.name}")
 
+def get_member(id):
+    member = Family_Member.find_by_id(id)
+    if member.name == "Arthur":
+        print("It's you!")
+    else:
+        print(f"{member.name} is {member.age} years old and is your {member.title}")
 
+def tasks_by_id(id):
+    print(f"***Tasks for {Family_Member.find_by_id(id).name}***")
+    for task in Task.all_tasks_for_id(id):
+        print(f"{task.id}.{task.description}")
+
+def view_tasks():
+    print("***Tasks***")
+    for task in Task.get_all():
+        member = Family_Member.find_by_id(task.family_member_id)
+        print(f"{task.id}.{task.description} to be done by {member.name}")
+        
 def exit_program():
     print("Goodbye!")
     exit()

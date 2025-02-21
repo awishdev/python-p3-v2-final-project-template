@@ -89,3 +89,4 @@ class Task:
         tasks = CURSOR.execute("SELECT * FROM tasks WHERE family_member_id =?", [id]).fetchall()
         return [cls.instance_from_db(task) for task in tasks]
     
+    

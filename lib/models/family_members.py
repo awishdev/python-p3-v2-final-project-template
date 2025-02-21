@@ -75,9 +75,11 @@ class Family_Member:
                 member.name = row[1]
                 member.age = row[2]
                 member.title = row[3]
-            else:
-                member = cls(row[1], row[2], row[3])
-                cls.all[member.id]=member
+                return member
+            
+            member = cls(row[1], row[2], row[3])
+            member.id = row[0]
+            cls.all[member.id]=member
 
             return member
     @classmethod
