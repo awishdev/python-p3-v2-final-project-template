@@ -32,22 +32,24 @@ def view_tasks():
     print("***********")
 
 def exit_program():
-    #toodles
+    # toodles
     print("Goodbye!")
     exit()
 
 def seed():
+    # set up database
+    # wipe and set up tables
     Family_Member.drop_table()
     Task.drop_table()
     Family_Member.create_table()
     Task.create_table()
-
+    # add family
     Aj = Family_Member("AJ", 5, "Son")
     Lauren = Family_Member("Lauren", 7, "Daughter")
     Violet = Family_Member("Violet", 2, "Daughter")
     Katie = Family_Member("Katie", 35, "Wife")
     Arthur = Family_Member("Arthur", 29, "Me")
-
+    # add tasks
     Dishes = Task("Wash Dishes", 4)
     Cooking = Task("Cook Dinner", 5)
     Laundry = Task("Laundry", 4)
@@ -55,16 +57,19 @@ def seed():
     Washcar = Task("Wash Car", 5)
 
 def add_task(id):
+    # add a new task for a specific family member by id
     description = input("Enter the description of the task: ")
     Task(description, int(id))
     print("Task added!")
 
 def pick_member():
+    # select a family member by number
     view_members()
     choice = input("Enter the number of the family member you want to add a task for: ")
     return int(choice)
 
 def update_member_info(id):
+    # update a family member's information by id
     name = input("Enter the new name: ")
     age = input("Enter the new age: ")
     title = input("Enter the new title: ")
@@ -72,8 +77,10 @@ def update_member_info(id):
     print("Member information updated!")
 
 def delete_member(id):
+    # delete a family member by id
     member = Family_Member.find_by_id(id)
     if member:
+        # verify cruelty
         print(f"Are you sure you want to delete {member.name} (y/n)?")
         choice = input(">")
         if choice.lower() == "y":
@@ -87,6 +94,7 @@ def delete_member(id):
         print("Member not found.")
 
 def search_by_family_member(id):
+    #search tasks by family member and print list 
     family_member = Family_Member.find_by_id(id)
     if family_member:
         print(f"Tasks for {family_member.name}:")
@@ -96,15 +104,16 @@ def search_by_family_member(id):
         print("Family member not found.")
 
 def search_by_description(description):
+    #search tasks by description and print
     tasks = Task.find_by_description(description)
     if tasks:
-        print(f"Tasks containing '{description}':")
         for task in tasks:
             print(f"{task.description} to be done by {Family_Member.find_by_id(task.family_member_id).name}")
     else:
         print("No tasks found matching the description.")
 
 def del_task(choice):
+    # delete a task by number
     try:
         task_id = int(choice)
         task = Task.find_by_id(task_id)
