@@ -5,12 +5,14 @@ from helpers import (
     view_members,
     get_member,
     view_tasks,
-    tasks_by_id
+    tasks_by_id,
+    seed
 
 )
 
 
 def main():
+    seed()
     main_menu()
 
 

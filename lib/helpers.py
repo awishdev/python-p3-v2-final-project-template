@@ -1,6 +1,7 @@
 # lib/helpers.py
 from models.family_members import Family_Member
 from models.tasks import Task
+#from seed import seeder
 
 def view_members():
     print("***Family Members***")
@@ -24,7 +25,25 @@ def view_tasks():
     for task in Task.get_all():
         member = Family_Member.find_by_id(task.family_member_id)
         print(f"{task.id}.{task.description} to be done by {member.name}")
-        
+
 def exit_program():
     print("Goodbye!")
     exit()
+
+def seed():
+    Family_Member.drop_table()
+    Task.drop_table()
+    Family_Member.create_table()
+    Task.create_table()
+
+    Aj = Family_Member("AJ", 5, "Son")
+    Lauren = Family_Member("Lauren", 7, "Daughter")
+    Violet = Family_Member("Violet", 2, "Daughter")
+    Katie = Family_Member("Katie", 35, "Wife")
+    Arthur = Family_Member("Arthur", 29, "Me")
+
+    Dishes = Task("Wash Dishes", 4)
+    Cooking = Task("Cook Dinner", 5)
+    Laundry = Task("Laundry", 4)
+    Pickup = Task("Pickup toys", 2)
+    Washcar = Task("Wash Car", 5)

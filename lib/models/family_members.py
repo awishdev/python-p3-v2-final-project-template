@@ -86,8 +86,13 @@ class Family_Member:
     def get_all(cls):
 
         rows = CURSOR.execute("SELECT * FROM family_members").fetchall()
+        members = []
+        for row in rows:
+            member = cls.instance_from_db(row)
+            if member:
+                members.append(member)
         
-        return [cls.instance_from_db(row) for row in rows]
+        return members
                 
     def delete(self):
         CURSOR.execute("DELETE FROM family_members WHERE id=?", (self.id,))
@@ -98,7 +103,8 @@ class Family_Member:
     @classmethod
     def find_by_id(cls, id):
         member = CURSOR.execute("SELECT * FROM family_members WHERE id = ?", [id]).fetchone()
-        return cls.instance_from_db(member) if member else None
+        if member:
+            return cls.instance_from_db(member)
             
     @classmethod
     def update(cls, id, name, age, title):
