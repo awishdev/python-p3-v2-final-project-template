@@ -1,7 +1,6 @@
 # lib/helpers.py
 from models.family_members import Family_Member
 from models.tasks import Task
-#from seed import seeder
 
 def view_members():
     print("***Family Members***")
@@ -53,3 +52,30 @@ def add_task(id):
     description = input("Enter the description of the task: ")
     Task(description, int(id))
     print("Task added!")
+
+def pick_member():
+    view_members()
+    choice = input("Enter the number of the family member you want to add a task for: ")
+    return int(choice)
+
+def update_member_info(id):
+    name = input("Enter the new name: ")
+    age = input("Enter the new age: ")
+    title = input("Enter the new title: ")
+    Family_Member.update(id, name, int(age), title)
+    print("Member information updated!")
+
+def delete_member(id):
+    member = Family_Member.find_by_id(id)
+    if member:
+        print(f"Are you sure you want to delete {member.name} (y/n)?")
+        choice = input(">")
+        if choice.lower() == "y":
+            Family_Member.delete(id)
+            print(f"{member.name} has been deleted!")
+        elif choice.lower() == "n":
+            print("Member deletion cancelled.")
+        else:
+            print("Invalid choice. Member deletion cancelled.")
+    else:
+        print("Member not found.")
