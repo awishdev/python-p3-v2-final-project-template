@@ -8,7 +8,6 @@ class Task:
         self.id = None
         self.description = description
         self.family_member_id = family_member_id
-        self.save()
     #attribute properties
     @property
     def description(self):
@@ -107,5 +106,12 @@ class Task:
     def find_by_description(cls, description):
         tasks = CURSOR.execute("SELECT * FROM tasks WHERE description =?", [description]).fetchall()
         return [cls.build_task(task) for task in tasks]
+    
+    @classmethod
+    def create(cls, description, id):
+        new_task = cls(description, id)
+        new_task.save()
+        return new_task
+
     
     

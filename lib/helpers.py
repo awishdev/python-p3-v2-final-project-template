@@ -43,38 +43,35 @@ def seed():
     # set up database
     # wipe and set up tables
     
-    if not len(Family_Member.get_all()) > 0:
-    ####################
-    # uncomment drops for testing
-    ####################
-        Family_Member.drop_table()
-        Task.drop_table()
-        Family_Member.create_table()
-        Task.create_table()
+
+    Family_Member.drop_table()
+    Task.drop_table()
+    Family_Member.create_table()
+    Task.create_table()
     # build local dicts from db
     
         #Task.get_all()
         # add family
-        Aj = Family_Member("AJ", 5, "Son")
-        Lauren = Family_Member("Lauren", 7, "Daughter")
-        Violet = Family_Member("Violet", 2, "Daughter")
-        Katie = Family_Member("Katie", 35, "Wife")
-        Arthur = Family_Member("Arthur", 29, "Me")
-        # add tasks
-        Dishes = Task("Wash Dishes", 4)
-        Cooking = Task("Cook Dinner", 5)
-        Laundry = Task("Laundry", 4)
-        Pickup = Task("Pickup toys", 2)
-        Washcar = Task("Wash Car", 5)
-        Legos = Task("Pickup Legos", 1)
-        Learn_Colors = Task("Practice learning colors", 3)
-        Phonics = Task("Practice phonics and alphabet sounds", 1)
-        Read = Task("Read 5 book pages", 2)
+    Aj = Family_Member.create("AJ", 5, "Son")
+    Lauren = Family_Member.create("Lauren", 7, "Daughter")
+    Violet = Family_Member.create("Violet", 2, "Daughter")
+    Katie = Family_Member.create("Katie", 35, "Wife")
+    Arthur = Family_Member.create("Arthur", 29, "Me")
+    # add tasks
+    Dishes = Task.create("Wash Dishes", 4)
+    Cooking = Task.create("Cook Dinner", 5)
+    Laundry = Task.create("Laundry", 4)
+    Pickup = Task.create("Pickup toys", 2)
+    Washcar = Task.create("Wash Car", 5)
+    Legos = Task.create("Pickup Legos", 1)
+    Learn_Colors = Task.create("Practice learning colors", 3)
+    Phonics = Task.create("Practice phonics and alphabet sounds", 1)
+    Read = Task.create("Read 5 book pages", 2)
 
 def add_task(id):
     # add a new task for a specific family member by id
     description = input("Enter the description of the task: ")
-    Task(description, int(id))
+    Task.create(description, int(id))
     print("Task added!")
 
 def pick_member():
@@ -146,5 +143,5 @@ def new_family_member():
     name = input("Enter the name of the new family member: ")
     age = input("Enter the age of the new family member: ")
     title = input("Enter the title of the new family member: ")
-    Family_Member(name, int(age), title)
+    Family_Member.create(name, int(age), title)
     print("Family member added!")

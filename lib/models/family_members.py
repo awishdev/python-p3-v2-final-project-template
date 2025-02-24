@@ -8,7 +8,6 @@ class Family_Member:
         self.name = name
         self.age = age
         self.title = title
-        self.save()
 
     # set attributes as properties
     @property
@@ -139,4 +138,9 @@ class Family_Member:
         else:
             raise ValueError("Family member not found.")
 
+    @classmethod
+    def create(cls, name, age=0, title="baby"):
+        member = cls(name, age, title)
+        member.save()
+        return member
 
