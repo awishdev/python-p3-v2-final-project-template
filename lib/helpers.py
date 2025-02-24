@@ -42,6 +42,7 @@ def exit_program():
 def seed():
     # set up database
     # wipe and set up tables
+    
     if not len(Family_Member.get_all()) > 0:
     ####################
     # uncomment drops for testing
@@ -65,6 +66,10 @@ def seed():
         Laundry = Task("Laundry", 4)
         Pickup = Task("Pickup toys", 2)
         Washcar = Task("Wash Car", 5)
+        Legos = Task("Pickup Legos", 1)
+        Learn_Colors = Task("Practice learning colors", 3)
+        Phonics = Task("Practice phonics and alphabet sounds", 1)
+        Read = Task("Read 5 book pages", 2)
 
 def add_task(id):
     # add a new task for a specific family member by id
