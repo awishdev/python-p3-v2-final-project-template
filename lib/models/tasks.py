@@ -98,8 +98,8 @@ class Task:
         return cls.build_task(task) if task else None
     
     @classmethod
-    def all_tasks_for_id(cls, id):
-        tasks = CURSOR.execute("SELECT * FROM tasks WHERE family_member_id =?", [id]).fetchall()
+    def all_tasks_for_id(cls, foreign_key):
+        tasks = CURSOR.execute("SELECT * FROM tasks WHERE family_member_id =?", [foreign_key]).fetchall()
         return [cls.build_task(task) for task in tasks]
     
     @classmethod
@@ -108,8 +108,8 @@ class Task:
         return [cls.build_task(task) for task in tasks]
     
     @classmethod
-    def create(cls, description, id):
-        new_task = cls(description, id)
+    def create(cls, description, foreign_key):
+        new_task = cls(description, foreign_key)
         new_task.save()
         return new_task
 

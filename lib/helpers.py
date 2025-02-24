@@ -68,10 +68,10 @@ def seed():
     Phonics = Task.create("Practice phonics and alphabet sounds", 1)
     Read = Task.create("Read 5 book pages", 2)
 
-def add_task(id):
+def add_task(foreign_key):
     # add a new task for a specific family member by id
     description = input("Enter the description of the task: ")
-    Task.create(description, int(id))
+    Task.create(description, int(foreign_key))
     print("Task added!")
 
 def pick_member():
